@@ -1,6 +1,6 @@
 # PHP CMS Starter
 
-> **Teaching stage 0 of 3: Flat script.** Everything lives in `index.php` - the database connection, request handling, SQL queries, and HTML output. There are no classes, no models, and no separate view files. This is the starting point before any MVC-style split. See `stage-1-basic-mvc` for the next step (models and views pulled out, routing still inline), or `main` for the full Front Controller + Router + Controllers version.
+> **Teaching stage 0 of 4: Flat script.** Everything lives in `index.php` - the database connection, request handling, SQL queries, and HTML output. There are no classes, no models, and no separate view files. This is the starting point before any MVC-style split. See `stage-1-views` for the next step (the same script with its markup pulled into view files), or `main` for the latest stage.
 
 A lightweight CMS built with PHP, MySQL, and PDO. This stage keeps everything in a single procedural script so the whole request/response cycle is visible top to bottom in one file.
 
@@ -121,7 +121,7 @@ Use the demo credentials:
 5. Fetch whatever data the page needs (published posts, and the user list if logged in) with plain `$pdo->query()` / `$pdo->prepare()` calls.
 6. Print the HTML directly, with PHP tags mixed into the markup.
 
-There's no router, no controller classes, and no template files - the next stage (`stage-1-basic-mvc`) pulls the data access into model classes and the markup into view files.
+There's no router, no controller classes, and no template files - the next stage (`stage-1-views`) pulls the markup out into view files, still without introducing a single class.
 
 ## Security
 
