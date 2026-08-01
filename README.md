@@ -1,34 +1,24 @@
 # PHP CMS Starter
 
-A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
+> **Teaching stage 0 of 3: Flat script.** Everything lives in `index.php` - the database connection, request handling, SQL queries, and HTML output. There are no classes, no models, and no separate view files. This is the starting point before any MVC-style split. See `stage-1-basic-mvc` for the next step (models and views pulled out, routing still inline), or `main` for the full Front Controller + Router + Controllers version.
+
+A lightweight CMS built with PHP, MySQL, and PDO. This stage keeps everything in a single procedural script so the whole request/response cycle is visible top to bottom in one file.
 
 ## Features
 
-- **User Management**: Registration, login/logout, role-based access (admin/user)
-- **Post Management**: Create, read, update, delete posts with user ownership
+- **User Management**: Login/logout, role-based access (admin/user)
+- **Post Management**: Read published posts, listed with their author
 - **PDO Database**: Secure database access with prepared statements
-- **Singleton Pattern**: Efficient single database connection
-- **MVC-like Structure**: Separated views from business logic
-- **Type Hints**: Full PHP type declarations for better IDE support
+- **Single File**: No classes, no models, no views - `index.php` handles the whole request
 
 ## Structure
 
 ```
 php-newbie/
-├── config.php              # Configuration (DB, site settings, autoloader)
-├── index.php               # Front controller
+├── config.php              # Configuration (DB, site settings)
+├── index.php               # Everything: DB connection, request handling, HTML output
 ├── setup.sql               # MySQL database schema + sample data
-├── README.md
-├── docs/
-│   └── connection.md       # Database connection documentation
-└── includes/
-    ├── Database.php        # PDO connection with Singleton pattern
-    ├── User.php            # User model with auth
-    └── Post.php            # Post model with CRUD
-└── views/
-    ├── layout.php          # Base template
-    ├── home.php            # Posts and users display
-    └── login.php           # Login form
+└── README.md
 ```
 
 ## Requirements
@@ -45,6 +35,7 @@ php-newbie/
 ```bash
 git clone https://github.com/imagewize/php-newbie.git
 cd php-newbie
+git checkout stage-0-flat-script
 ```
 
 ### 2. Create the database
@@ -119,82 +110,27 @@ Use the demo credentials:
 | created_at | TIMESTAMP | Record creation time |
 | updated_at | TIMESTAMP | Last update time |
 
-## Usage
+## How it works
 
-### Login
+`index.php` runs top to bottom on every request:
 
-```php
-$user = new User();
-$user->login('email@example.com', 'password');
-```
+1. Connect to MySQL with `PDO`.
+2. Read `?action=` from the query string and figure out what's being requested (home, login, logout).
+3. If the request is a login POST, look up the user and verify the password.
+4. If the request is a logout, clear the session and redirect.
+5. Fetch whatever data the page needs (published posts, and the user list if logged in) with plain `$pdo->query()` / `$pdo->prepare()` calls.
+6. Print the HTML directly, with PHP tags mixed into the markup.
 
-### Get all users
-
-```php
-$user = new User();
-$allUsers = $user->getAll();
-```
-
-### Get all published posts
-
-```php
-$post = new Post();
-$posts = $post->getPublished();
-```
-
-### Create a post
-
-```php
-$post = new Post();
-$post->create([
-    'title' => 'My Post',
-    'content' => 'Post content here',
-    'status' => 'published'
-]);
-```
-
-## Architecture
-
-### Singleton Pattern
-
-The `Database` class uses the Singleton pattern to ensure only one database connection exists per request:
-
-```php
-$db = Database::getInstance();
-```
-
-### Separation of Concerns
-
-- **Controllers**: `index.php` handles HTTP requests and routing
-- **Models**: `User.php`, `Post.php` handle data and business logic
-- **Views**: `views/*.php` handle presentation
-- **Configuration**: `config.php` centralizes settings
-
-### Type Safety
-
-All classes use PHP type hints for properties, parameters, and return values:
-
-```php
-class Database {
-    private PDO $connection;
-    private static ?self $instance = null;
-    
-    public static function getInstance(): self { ... }
-    public function query(string $sql, array $params = []): PDOStatement { ... }
-}
-```
+There's no router, no controller classes, and no template files - the next stage (`stage-1-basic-mvc`) pulls the data access into model classes and the markup into view files.
 
 ## Security
+
+Even at this early stage, the basics are non-negotiable:
 
 - **Prepared Statements**: All SQL queries use PDO prepared statements
 - **Password Hashing**: Uses `password_hash()` and `password_verify()`
 - **HTML Escaping**: Uses `htmlspecialchars()` for output
-- **CSRF Protection**: Recommended to add for forms in production
 - **SQL Injection**: Prevented by PDO prepared statements with `ATTR_EMULATE_PREPARES => false`
-
-## Documentation
-
-- [Database Connection & Singleton Pattern](docs/connection.md)
 
 ## Contributing
 

@@ -16,11 +16,3 @@ error_reporting(E_ALL);
 
 // Start session
 session_start();
-
-// Autoload classes
-spl_autoload_register(function ($class) {
-    $file = __DIR__ . '/includes/' . $class . '.php';
-    if (file_exists($file)) {
-        require $file;
-    }
-});

@@ -54,11 +54,10 @@ Added some files and changed others
 
 ### File Organization
 
-- **Models**: `includes/` directory, one class per file
-- **Views**: `views/` directory, pure HTML/PHP templates
-- **Controllers**: Root level (e.g., `index.php`)
+> This is `stage-0-flat-script`: there is no `includes/`, `views/`, or `docs/` split yet. Everything lives in `index.php`. See `stage-1-basic-mvc` and `main` for the later stages where this organization applies.
+
+- **Everything**: `index.php` (DB connection, request handling, HTML output)
 - **Configuration**: `config.php` in root
-- **Documentation**: `docs/` directory
 
 ### Naming Conventions
 
@@ -111,18 +110,8 @@ php-newbie/
 ├── LICENSE.md              # MIT License
 ├── README.md               # Project documentation
 ├── config.php              # Configuration
-├── index.php               # Front controller
-├── setup.sql               # Database schema
-├── docs/
-│   └── connection.md       # Database documentation
-├── includes/
-│   ├── Database.php        # Database connection
-│   ├── User.php            # User model
-│   └── Post.php            # Post model
-└── views/
-    ├── layout.php          # Base template
-    ├── home.php            # Main content
-    └── login.php           # Login form
+├── index.php               # Everything: DB connection, request handling, HTML output
+└── setup.sql               # Database schema
 ```
 
 ## Workflow
