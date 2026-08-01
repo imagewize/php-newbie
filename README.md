@@ -9,18 +9,20 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | Stage | Branch | What it shows | Key skills |
 |-------|--------|----------------|------------|
 | 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. | PDO basics, request handling |
-| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. | Separation of concerns, classes |
-| 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. | Routing, controller pattern |
-| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. | Template rendering, layouts |
+| 1 | [`stage-1-views`](../../tree/stage-1-views) | Same procedural script, but the markup moves into `views/`. Still no classes. | Presentation vs. logic, output buffering |
+| 2 | [`stage-2-basic-mvc`](../../tree/stage-2-basic-mvc) | Model classes in `includes/`; routing still inline in `index.php`. | Classes, type hints, autoloading |
+| 3 | [`stage-3-front-controller`](../../tree/stage-3-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. | Routing, controller pattern |
+| 4 | [`stage-4-view-layer`](../../tree/stage-4-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. | Template rendering, layouts |
 
-Stage branches 2 and up are frozen checkpoints of `main` as of the commit where that stage was completed - `main` keeps evolving past the latest one, so check `main`'s own commit history for anything added since.
+Stage branches 3 and up are frozen checkpoints of `main` as of the commit where that stage was completed - `main` keeps evolving past the latest one, so check `main`'s own commit history for anything added since.
 
 ### See the evolution
 
 ```bash
-git diff stage-0-flat-script stage-1-basic-mvc       # MVC split
-git diff stage-1-basic-mvc stage-2-front-controller  # Routing
-git diff stage-2-front-controller stage-3-view-layer # Rendering
+git diff stage-0-flat-script stage-1-views           # Views extracted
+git diff stage-1-views stage-2-basic-mvc             # Classes and models
+git diff stage-2-basic-mvc stage-3-front-controller  # Routing
+git diff stage-3-front-controller stage-4-view-layer # Rendering
 ```
 
 ## Features
