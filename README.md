@@ -6,16 +6,22 @@ A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clea
 
 This repo is structured as a tutorial: the same CMS, rebuilt in progressively more organized stages. Each stage is a branch you can check out and run on its own. `main` always holds the latest stage's code.
 
-| Stage | Branch | What it shows |
-|-------|--------|----------------|
-| 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
-| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
-| 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
-| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
+| Stage | Branch | What it shows | Key skills |
+|-------|--------|----------------|------------|
+| 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. | PDO basics, request handling |
+| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. | Separation of concerns, classes |
+| 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. | Routing, controller pattern |
+| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. | Template rendering, layouts |
 
 Stage branches 2 and up are frozen checkpoints of `main` as of the commit where that stage was completed - `main` keeps evolving past the latest one, so check `main`'s own commit history for anything added since.
 
-`git diff stage-0-flat-script stage-1-basic-mvc`, `git diff stage-1-basic-mvc stage-2-front-controller`, and `git diff stage-2-front-controller stage-3-view-layer` show exactly what changed at each step.
+### See the evolution
+
+```bash
+git diff stage-0-flat-script stage-1-basic-mvc       # MVC split
+git diff stage-1-basic-mvc stage-2-front-controller  # Routing
+git diff stage-2-front-controller stage-3-view-layer # Rendering
+```
 
 ## Features
 
