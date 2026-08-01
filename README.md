@@ -11,10 +11,11 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
 | 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
 | 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
+| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
 
-`stage-2-front-controller` is a frozen checkpoint of `main` as of this commit - `main` keeps evolving past it, so the two may drift over time.
+`stage-2-front-controller` and `stage-3-view-layer` are frozen checkpoints of `main` as of their respective commits - `main` keeps evolving past them, so they may drift over time.
 
-`git diff stage-0-flat-script stage-1-basic-mvc` and `git diff stage-1-basic-mvc stage-2-front-controller` show exactly what changed at each step.
+`git diff stage-0-flat-script stage-1-basic-mvc`, `git diff stage-1-basic-mvc stage-2-front-controller`, and `git diff stage-2-front-controller stage-3-view-layer` show exactly what changed at each step.
 
 ## Features
 
