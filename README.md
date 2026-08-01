@@ -1,24 +1,28 @@
 # PHP CMS Starter
 
-> **Teaching stage 0 of 3: Flat script.** Everything lives in `index.php` - the database connection, request handling, SQL queries, and HTML output. There are no classes, no models, and no separate view files. This is the starting point before any MVC-style split. See `stage-1-basic-mvc` for the next step (models and views pulled out, routing still inline), or `main` for the full Front Controller + Router + Controllers version.
+> **Teaching stage 1 of 4: Views extracted.** The script is still completely procedural - raw `PDO`, no classes, no models, no router - but the HTML has moved out of `index.php` into `views/`. The one new idea is separating what a page *does* from what it *looks like*. See `stage-0-flat-script` for the single-file starting point, `stage-2-basic-mvc` for the next step (model classes), or `main` for the latest stage.
 
-A lightweight CMS built with PHP, MySQL, and PDO. This stage keeps everything in a single procedural script so the whole request/response cycle is visible top to bottom in one file.
+A lightweight CMS built with PHP, MySQL, and PDO. This stage takes stage 0's flat script and pulls the markup into template files, without introducing a single class.
 
 ## Features
 
 - **User Management**: Login/logout, role-based access (admin/user)
 - **Post Management**: Read published posts, listed with their author
 - **PDO Database**: Secure database access with prepared statements
-- **Single File**: No classes, no models, no views - `index.php` handles the whole request
+- **Separate Views**: Markup lives in `views/`; `index.php` handles only logic and data
 
 ## Structure
 
 ```
 php-newbie/
 ├── config.php              # Configuration (DB, site settings)
-├── index.php               # Everything: DB connection, request handling, HTML output
+├── index.php               # DB connection, request handling, data fetching
 ├── setup.sql               # MySQL database schema + sample data
-└── README.md
+├── README.md
+└── views/
+    ├── layout.php          # Page shell: <head>, header, prints $content
+    ├── home.php            # Posts and users display
+    └── login.php           # Login form
 ```
 
 ## Requirements
@@ -35,7 +39,7 @@ php-newbie/
 ```bash
 git clone https://github.com/imagewize/php-newbie.git
 cd php-newbie
-git checkout stage-0-flat-script
+git checkout stage-1-views
 ```
 
 ### 2. Create the database
@@ -119,9 +123,25 @@ Use the demo credentials:
 3. If the request is a login POST, look up the user and verify the password.
 4. If the request is a logout, clear the session and redirect.
 5. Fetch whatever data the page needs (published posts, and the user list if logged in) with plain `$pdo->query()` / `$pdo->prepare()` calls.
-6. Print the HTML directly, with PHP tags mixed into the markup.
+6. Render a view, then wrap it in the layout.
 
-There's no router, no controller classes, and no template files - the next stage (`stage-1-basic-mvc`) pulls the data access into model classes and the markup into view files.
+Steps 1-5 are byte-for-byte the same as stage 0. Only step 6 changed.
+
+### The view/layout trick
+
+```php
+ob_start();                     // start capturing output
+include 'views/home.php';       // this prints markup...
+$content = ob_get_clean();      // ...but it lands in $content instead of the browser
+include 'views/layout.php';     // the layout prints $content inside the page shell
+```
+
+Two things are worth pausing on, because they're the parts that surprise people:
+
+- **`ob_start()` / `ob_get_clean()`** is PHP's output buffer. Between those two calls, anything a script prints is captured into a string rather than sent to the browser. That's what lets a page's markup be rendered *before* the layout that surrounds it.
+- **Included files share the including file's variable scope.** `views/home.php` never declares `$posts` - it can just use it, because `index.php` defined it earlier. This is convenient and also the main weakness of this approach: nothing states which variables a view depends on, so it's easy to break a template by renaming a variable somewhere else.
+
+Later stages address exactly that: `stage-2-basic-mvc` moves the data access into model classes, and the view layer eventually gets its own class that passes data in explicitly instead of relying on ambient scope.
 
 ## Security
 
