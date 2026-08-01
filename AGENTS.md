@@ -111,14 +111,19 @@ php-newbie/
 ├── LICENSE.md              # MIT License
 ├── README.md               # Project documentation
 ├── config.php              # Configuration
-├── index.php               # Front controller
+├── index.php               # Entry point: dispatches the router, hands data to the View
 ├── setup.sql               # Database schema
 ├── docs/
 │   └── connection.md       # Database documentation
 ├── includes/
 │   ├── Database.php        # Database connection
-│   ├── User.php            # User model
-│   └── Post.php            # Post model
+│   ├── User.php             # User model
+│   ├── Post.php              # Post model
+│   ├── Router.php             # Maps actions to controller handlers
+│   ├── View.php                # Renders templates and layouts
+│   └── controllers/
+│       ├── AuthController.php # Login/logout
+│       └── HomeController.php # Home page data
 └── views/
     ├── layout.php          # Base template
     ├── home.php            # Main content

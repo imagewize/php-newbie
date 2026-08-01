@@ -4,7 +4,7 @@ A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clea
 
 ## Teaching stages
 
-This repo is structured as a tutorial: the same CMS, rebuilt in progressively more organized stages. Each stage is a branch you can check out and run on its own.
+This repo is structured as a tutorial: the same CMS, rebuilt in progressively more organized stages. Each stage is a branch you can check out and run on its own. `main` always holds the latest stage's code.
 
 | Stage | Branch | What it shows |
 |-------|--------|----------------|
@@ -13,7 +13,7 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
 | 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
 
-`stage-2-front-controller` and `stage-3-view-layer` are frozen checkpoints of `main` as of their respective commits - `main` keeps evolving past them, so they may drift over time.
+Stage branches 2 and up are frozen checkpoints of `main` as of the commit where that stage was completed - `main` keeps evolving past the latest one, so check `main`'s own commit history for anything added since.
 
 `git diff stage-0-flat-script stage-1-basic-mvc`, `git diff stage-1-basic-mvc stage-2-front-controller`, and `git diff stage-2-front-controller stage-3-view-layer` show exactly what changed at each step.
 
@@ -31,15 +31,20 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 ```
 php-newbie/
 ├── config.php              # Configuration (DB, site settings, autoloader)
-├── index.php               # Front controller
+├── index.php               # Entry point: dispatches the router, hands data to the View
 ├── setup.sql               # MySQL database schema + sample data
 ├── README.md
 ├── docs/
 │   └── connection.md       # Database connection documentation
-└── includes/
-    ├── Database.php        # PDO connection with Singleton pattern
-    ├── User.php            # User model with auth
-    └── Post.php            # Post model with CRUD
+├── includes/
+│   ├── Database.php         # PDO connection with Singleton pattern
+│   ├── User.php              # User model with auth
+│   ├── Post.php               # Post model with CRUD
+│   ├── Router.php             # Maps GET/POST actions to controller handlers
+│   ├── View.php               # Renders templates and composes them with a layout
+│   └── controllers/
+│       ├── AuthController.php # Login/logout
+│       └── HomeController.php # Home page data
 └── views/
     ├── layout.php          # Base template
     ├── home.php            # Posts and users display
@@ -180,9 +185,10 @@ $db = Database::getInstance();
 
 ### Separation of Concerns
 
-- **Controllers**: `index.php` handles HTTP requests and routing
+- **Routing**: `Router.php` maps GET/POST actions to controller handlers
+- **Controllers**: `includes/controllers/*.php` handle requests and return data
 - **Models**: `User.php`, `Post.php` handle data and business logic
-- **Views**: `views/*.php` handle presentation
+- **Views**: `View.php` renders `views/*.php` templates and composes them with a layout
 - **Configuration**: `config.php` centralizes settings
 
 ### Type Safety
