@@ -19,8 +19,17 @@ session_start();
 
 // Autoload classes
 spl_autoload_register(function ($class) {
+    // Try includes directory first
     $file = __DIR__ . '/includes/' . $class . '.php';
     if (file_exists($file)) {
         require $file;
+        return;
+    }
+    
+    // Try includes/controllers directory
+    $file = __DIR__ . '/includes/controllers/' . $class . '.php';
+    if (file_exists($file)) {
+        require $file;
+        return;
     }
 });

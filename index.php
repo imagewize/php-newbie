@@ -1,47 +1,40 @@
 <?php
 require_once 'config.php';
 
+// Initialize models and controllers
 $user = new User();
-$post = new Post();
+$router = new Router();
+$authController = new AuthController();
+$homeController = new HomeController();
 
-// Handle actions from GET parameters
-$action = $_GET['action'] ?? 'home';
+// Register GET routes
+$router->addGetRoute('home', [$homeController, 'index']);
+$router->addGetRoute('login', fn($get) => ['action' => 'login']);
+$router->addGetRoute('logout', [$authController, 'logout']);
 
-// Handle POST requests
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['login'])) {
-        $loginUser = $user->login($_POST['email'], $_POST['password']);
-        if ($loginUser) {
-            header('Location: index.php');
-            exit;
-        }
-        $error = 'Invalid email or password';
-        $action = 'login';
-    }
+// Register POST routes
+$router->addPostRoute('login', [$authController, 'login']);
+
+// Dispatch and get result
+$result = $router->dispatch();
+
+// Handle redirects from controllers
+if (isset($result['redirect'])) {
+    header("Location: {$result['redirect']}");
+    exit;
 }
 
-// Handle GET actions
-switch ($action) {
-    case 'logout':
-        $user->logout();
-        header('Location: index.php');
-        exit;
+$action = $result['action'];
+$data = $result['data'];
 
-    case 'login':
-        // Show login form
-        break;
-
-    default:
-        $action = 'home';
-        // Get data for home view
-        $currentUser = $user->getCurrentUser();
-        $posts = $post->getPublished();
-        $allUsers = $user->getAll();
-        break;
-}
-
-// Prepare data for views
+// Ensure currentUser is available for views
 $currentUser = $currentUser ?? $user->getCurrentUser();
+
+// Extract controller data for views (won't overwrite existing vars due to EXTR_SKIP)
+extract($data, EXTR_SKIP);
+
+// Set default title
+$title = SITE_NAME;
 
 // Render the view
 ob_start();
