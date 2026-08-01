@@ -1,6 +1,8 @@
 # PHP CMS Starter
 
-> **Teaching stage 1 of 3: Basic MVC.** Models (`includes/`) and views (`views/`) are split out, but routing/action handling still lives directly in `index.php` — there's no dedicated Router or Controller layer yet. See `stage-0-flat-script` for the version before this split, or `main` for the next step (Front Controller + Router + Controllers).
+> **Teaching stage 2 of 4: Basic MVC.** Data access moves into model classes (`includes/`), joining the view files that `stage-1-views` already split out. Routing/action handling still lives directly in `index.php` — there's no dedicated Router or Controller layer yet. See `stage-1-views` for the version before classes were introduced, or `main` for the latest stage.
+
+This is where object-oriented PHP arrives: classes, constructors, type declarations, static methods, an autoloader, and the Singleton pattern. That's a lot at once — take it slowly, and compare against `stage-1-views` to see that the *behaviour* is unchanged; only the organisation is different.
 
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
