@@ -2,6 +2,18 @@
 
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
+## Teaching stages
+
+This repo is structured as a tutorial: the same CMS, rebuilt in progressively more organized stages. Each stage is a branch you can check out and run on its own.
+
+| Stage | Branch | What it shows |
+|-------|--------|----------------|
+| 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
+| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
+| 2 | `main` (this branch) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
+
+`git diff stage-0-flat-script stage-1-basic-mvc` and `git diff stage-1-basic-mvc main` show exactly what changed at each step.
+
 ## Features
 
 - **User Management**: Registration, login/logout, role-based access (admin/user)
