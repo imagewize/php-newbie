@@ -1,5 +1,7 @@
 # PHP CMS Starter
 
+> **Teaching stage 1 of 3: Basic MVC.** Models (`includes/`) and views (`views/`) are split out, but routing/action handling still lives directly in `index.php` — there's no dedicated Router or Controller layer yet. See `stage-0-flat-script` for the version before this split, or `main` for the next step (Front Controller + Router + Controllers).
+
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
 ## Features
