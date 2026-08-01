@@ -1,6 +1,6 @@
 # PHP CMS Starter
 
-> **Teaching stage 3 of 4: View layer.** Rendering is pulled out of `index.php` into a `View` class (`render()` / `renderWithLayout()`), replacing the manual `ob_start()` / `include` / `ob_get_clean()` dance. `index.php` now just picks a template name and hands data to the view - it no longer touches output buffering directly. See `stage-2-front-controller` for the step before this, or `main` for where the tutorial keeps going.
+> **Teaching stage 4 of 4: View layer.** Rendering is pulled out of `index.php` into a `View` class (`render()` / `renderWithLayout()`), replacing the manual `ob_start()` / `include` / `ob_get_clean()` dance that has been there since `stage-1-views`. `index.php` now just picks a template name and hands data to the view - it no longer touches output buffering directly. See `stage-3-front-controller` for the step before this, or `main` for where the tutorial keeps going.
 
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
@@ -11,13 +11,19 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | Stage | Branch | What it shows |
 |-------|--------|----------------|
 | 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
-| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
-| 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
-| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
+| 1 | [`stage-1-views`](../../tree/stage-1-views) | Same procedural script, but the markup moves into `views/`. Still no classes. |
+| 2 | [`stage-2-basic-mvc`](../../tree/stage-2-basic-mvc) | Model classes in `includes/`; routing still inline in `index.php`. |
+| 3 | [`stage-3-front-controller`](../../tree/stage-3-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
+| 4 | [`stage-4-view-layer`](../../tree/stage-4-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
 
-`stage-2-front-controller` and `stage-3-view-layer` are frozen checkpoints - `main` keeps evolving past them, so they may drift from `main` over time.
+`stage-3-front-controller` and `stage-4-view-layer` are frozen checkpoints - `main` keeps evolving past them, so they may drift from `main` over time.
 
-`git diff stage-0-flat-script stage-1-basic-mvc`, `git diff stage-1-basic-mvc stage-2-front-controller`, and `git diff stage-2-front-controller stage-3-view-layer` show exactly what changed at each step.
+```bash
+git diff stage-0-flat-script stage-1-views                 # views extracted
+git diff stage-1-views stage-2-basic-mvc                   # classes and models
+git diff stage-2-basic-mvc stage-3-front-controller        # routing
+git diff stage-3-front-controller stage-4-view-layer       # rendering
+```
 
 ## Features
 
