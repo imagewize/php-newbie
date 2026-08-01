@@ -1,6 +1,6 @@
 # PHP CMS Starter
 
-> **Teaching stage 2 of 3: Front Controller.** A `Router` and dedicated `Controller` classes now handle requests instead of `index.php` doing routing itself. This branch is a frozen checkpoint of that stage - `main` keeps evolving past it. See `stage-0-flat-script` and `stage-1-basic-mvc` for the earlier steps.
+> **Teaching stage 3 of 4: Front Controller.** A `Router` and dedicated `Controller` classes now handle requests instead of `index.php` doing routing itself. This branch is a frozen checkpoint of that stage - `main` keeps evolving past it. See `stage-0-flat-script`, `stage-1-views` and `stage-2-basic-mvc` for the earlier steps.
 
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
@@ -11,10 +11,15 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | Stage | Branch | What it shows |
 |-------|--------|----------------|
 | 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
-| 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
-| 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
+| 1 | [`stage-1-views`](../../tree/stage-1-views) | Same procedural script, but the markup moves into `views/`. Still no classes. |
+| 2 | [`stage-2-basic-mvc`](../../tree/stage-2-basic-mvc) | Model classes in `includes/`; routing still inline in `index.php`. |
+| 3 | [`stage-3-front-controller`](../../tree/stage-3-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
 
-`git diff stage-0-flat-script stage-1-basic-mvc` and `git diff stage-1-basic-mvc main` show exactly what changed at each step.
+```bash
+git diff stage-0-flat-script stage-1-views                 # views extracted
+git diff stage-1-views stage-2-basic-mvc                   # classes and models
+git diff stage-2-basic-mvc stage-3-front-controller        # routing
+```
 
 ## Features
 
