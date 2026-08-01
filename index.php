@@ -6,6 +6,7 @@ $user = new User();
 $router = new Router();
 $authController = new AuthController();
 $homeController = new HomeController();
+$view = new View();
 
 // Register GET routes
 $router->addGetRoute('home', [$homeController, 'index']);
@@ -28,24 +29,10 @@ $action = $result['action'];
 $data = $result['data'];
 
 // Ensure currentUser is available for views
-$currentUser = $currentUser ?? $user->getCurrentUser();
+$data['currentUser'] ??= $user->getCurrentUser();
+$data['user'] = $user;
+$data['title'] = SITE_NAME;
 
-// Extract controller data for views (won't overwrite existing vars due to EXTR_SKIP)
-extract($data, EXTR_SKIP);
+$template = ($action === 'login' && !$user->isLoggedIn()) ? 'login' : 'home';
 
-// Set default title
-$title = SITE_NAME;
-
-// Render the view
-ob_start();
-
-if ($action === 'login' && !$user->isLoggedIn()) {
-    include 'views/login.php';
-} else {
-    include 'views/home.php';
-}
-
-$content = ob_get_clean();
-
-// Render layout
-include 'views/layout.php';
+$view->renderWithLayout($template, $data);

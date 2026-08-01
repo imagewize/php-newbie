@@ -1,6 +1,6 @@
 # PHP CMS Starter
 
-> **Teaching stage 2 of 3: Front Controller.** A `Router` and dedicated `Controller` classes now handle requests instead of `index.php` doing routing itself. This branch is a frozen checkpoint of that stage - `main` keeps evolving past it. See `stage-0-flat-script` and `stage-1-basic-mvc` for the earlier steps.
+> **Teaching stage 3 of 4: View layer.** Rendering is pulled out of `index.php` into a `View` class (`render()` / `renderWithLayout()`), replacing the manual `ob_start()` / `include` / `ob_get_clean()` dance. `index.php` now just picks a template name and hands data to the view - it no longer touches output buffering directly. See `stage-2-front-controller` for the step before this, or `main` for where the tutorial keeps going.
 
 A lightweight CMS built with PHP, MySQL, and PDO. This project demonstrates clean architecture with separated concerns, type safety, and modern PHP practices.
 
@@ -13,8 +13,11 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 | 0 | [`stage-0-flat-script`](../../tree/stage-0-flat-script) | Everything in one `index.php` - no classes, no models, no views. |
 | 1 | [`stage-1-basic-mvc`](../../tree/stage-1-basic-mvc) | Models (`includes/`) and views (`views/`) split out; routing still inline in `index.php`. |
 | 2 | [`stage-2-front-controller`](../../tree/stage-2-front-controller) | Front Controller pattern: a `Router` and dedicated `Controller` classes handle requests. |
+| 3 | [`stage-3-view-layer`](../../tree/stage-3-view-layer) | A `View` class replaces manual `ob_start()`/`include` in `index.php` for rendering templates and layouts. |
 
-`git diff stage-0-flat-script stage-1-basic-mvc` and `git diff stage-1-basic-mvc main` show exactly what changed at each step.
+`stage-2-front-controller` and `stage-3-view-layer` are frozen checkpoints - `main` keeps evolving past them, so they may drift from `main` over time.
+
+`git diff stage-0-flat-script stage-1-basic-mvc`, `git diff stage-1-basic-mvc stage-2-front-controller`, and `git diff stage-2-front-controller stage-3-view-layer` show exactly what changed at each step.
 
 ## Features
 
@@ -30,15 +33,20 @@ This repo is structured as a tutorial: the same CMS, rebuilt in progressively mo
 ```
 php-newbie/
 ├── config.php              # Configuration (DB, site settings, autoloader)
-├── index.php               # Front controller
+├── index.php               # Entry point: dispatches the router, hands data to the View
 ├── setup.sql               # MySQL database schema + sample data
 ├── README.md
 ├── docs/
 │   └── connection.md       # Database connection documentation
-└── includes/
-    ├── Database.php        # PDO connection with Singleton pattern
-    ├── User.php            # User model with auth
-    └── Post.php            # Post model with CRUD
+├── includes/
+│   ├── Database.php         # PDO connection with Singleton pattern
+│   ├── User.php              # User model with auth
+│   ├── Post.php               # Post model with CRUD
+│   ├── Router.php             # Maps GET/POST actions to controller handlers
+│   ├── View.php               # Renders templates and composes them with a layout
+│   └── controllers/
+│       ├── AuthController.php # Login/logout
+│       └── HomeController.php # Home page data
 └── views/
     ├── layout.php          # Base template
     ├── home.php            # Posts and users display
@@ -179,9 +187,10 @@ $db = Database::getInstance();
 
 ### Separation of Concerns
 
-- **Controllers**: `index.php` handles HTTP requests and routing
+- **Routing**: `Router.php` maps GET/POST actions to controller handlers
+- **Controllers**: `includes/controllers/*.php` handle requests and return data
 - **Models**: `User.php`, `Post.php` handle data and business logic
-- **Views**: `views/*.php` handle presentation
+- **Views**: `View.php` renders `views/*.php` templates and composes them with a layout
 - **Configuration**: `config.php` centralizes settings
 
 ### Type Safety
